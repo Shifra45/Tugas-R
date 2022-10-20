@@ -1,0 +1,60 @@
+---
+title: "Tugas 1"
+author: "Alen"
+date: "2022-10-20"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+customers <- read.csv("D:/R Sems 7/Tugas 1/brazilian olist/olist_customers_dataset.csv")
+geolocation <- read.csv("D:/R Sems 7/Tugas 1/brazilian olist/olist_geolocation_dataset.csv")
+order_items <- read.csv("D:/R Sems 7/Tugas 1/brazilian olist/olist_order_items_dataset.csv")
+order_items
+orders <- read.csv("D:/R Sems 7/Tugas 1/brazilian olist/olist_orders_dataset.csv")
+orders
+products <- read.csv("D:/R Sems 7/Tugas 1/brazilian olist/olist_products_dataset.csv")
+products
+sellers <- read.csv("D:/R Sems 7/Tugas 1/brazilian olist/olist_sellers_dataset.csv")
+sellers
+order_payments
+order_reviews
+product_category_name
+```
+
+
+
+```{r}
+items_seller <- inner_join(order_items, sellers, by="seller_id")
+itemsOrders_bySeller <- inner_join(items_seller, orders, by="order_id")
+itemsOrders_bySeller
+
+total_itemsOrders_bySeller <- itemsOrders_bySeller %>%
+  group_by(seller_city) %>%
+  dplyr::summarize(total = n_distinct(order_id))
+total_itemsOrders_bySeller
+
+ggplot(total_itemsOrders_bySeller, aes(x=seller_city, y=total))+
+  geom_col()+
+  xlab("Seller City")+
+  ylab("Total Orders")+
+  ggtitle("Orders per City")
+```
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
